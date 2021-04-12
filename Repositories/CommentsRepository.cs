@@ -29,7 +29,7 @@ namespace bloggr_csharp.Repositories
             ";
             return _db.Query<Comment, Profile, Comment>(sql, (comment, profile) =>
             {
-                comment.CreatorId = profile.Id;
+                comment.Creator = profile;
                 return comment;
             }, new { id }, splitOn: "id").FirstOrDefault();
         }

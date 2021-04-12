@@ -44,11 +44,34 @@ namespace bloggr_csharp.Repositories
             ";
             return _db.Query<Blog, Profile, Blog>(sql, (blog, profile) =>
             {
-                blog.CreatorId = profile.Id;
+                blog.Creator = profile;
                 return blog;
             }, new { id }, splitOn: "id").FirstOrDefault();
         }
 
+        internal IEnumerable<Blog> GetAll()
+        {
+            string sql = @"
+            SELECT
+            b.*,
+            p.*
+            FROM blogs b
+            JOIN profiles p ON b.creatorId = p.id
+            ";
+            return _db.Query<Blog, Profile, Blog>(sql, (blog, profile) =>
+            {
+                blog.Creator = profile;
+                return blog;
+            }, splitOn: "id");
+        }
+
+        // internal Blog GetById(int id)
+        // {
+        //     string sql = @"
+        //     SELECT * FROM blogs WHERE id = @id;
+        //     ";
+        //     return _db.QueryFirstOrDefault<Blog>(sql, new { id });
+        // }
         internal Blog Create(Blog newBlog)
         {
             string sql = @"
@@ -77,12 +100,6 @@ namespace bloggr_csharp.Repositories
             ";
             Blog returnBlog = _db.QueryFirstOrDefault<Blog>(sql, data);
             return returnBlog;
-        }
-
-        internal IEnumerable<Blog> GetAll()
-        {
-            string sql = "SELECT * FROM blogs";
-            return _db.Query<Blog>(sql);
         }
 
         internal void Delete(int id, string userId)

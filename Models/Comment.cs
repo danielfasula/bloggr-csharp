@@ -11,5 +11,7 @@ namespace bloggr_csharp.Models
         public string Body { get; set; }
         [Required]
         public int Blog { get; set; }
+        public Profile Creator { get; set; }
+
     }
 }
