@@ -81,18 +81,8 @@ namespace bloggr_csharp.Repositories
 
         internal IEnumerable<Blog> GetAll()
         {
-            string sql = @"
-            SELECT
-            b.*,
-            p.*
-            FROM blogs b
-            JOIN profiles p on b.creatorId = p.id;
-            ";
-            return _db.Query<Blog, Profile, Blog>(sql, (blog, profile) =>
-            {
-                blog.CreatorId = profile.Id;
-                return blog;
-            }, splitOn: "id");
+            string sql = "SELECT * FROM blogs";
+            return _db.Query<Blog>(sql);
         }
 
         internal void Delete(int id, string userId)
