@@ -44,8 +44,8 @@ namespace bloggr_csharp.Services
         {
             Blog data = GetById(updated.Id);
             data.Title = updated.Title != null ? updated.Title : data.Title;
-            data.Title = updated.Title != null ? updated.Title : data.Title;
-            data.Title = updated.Title != null ? updated.Title : data.Title;
+            data.Body = updated.Body != null ? updated.Body : data.Body;
+            data.imgUrl = updated.imgUrl != null ? updated.imgUrl : data.imgUrl;
             data.published = updated.published != null ? updated.published : data.published;
 
             return _repo.Edit(data);

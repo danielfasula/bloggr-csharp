@@ -19,11 +19,13 @@ namespace bloggr_csharp.Controllers
     {
         private readonly ProfilesService _pservice;
         private readonly BlogsService _bservice;
+        private readonly CommentsService _cservice;
 
-        public AccountController(ProfilesService pservice, BlogsService bservice)
+        public AccountController(ProfilesService pservice, BlogsService bservice, CommentsService cservice)
         {
             _pservice = pservice;
             _bservice = bservice;
+            _cservice = cservice;
         }
 
         [HttpGet]
@@ -51,6 +53,20 @@ namespace bloggr_csharp.Controllers
             {
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
                 return Ok(_bservice.GetBlogsByProfileId(userInfo.Id));
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("comments")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        {
+            try
+            {
+                Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                return Ok(_cservice.GetCommentsByProfileId(userInfo.Id));
             }
             catch (System.Exception e)
             {

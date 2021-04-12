@@ -103,7 +103,12 @@ namespace bloggr_csharp.Controllers
         {
             try
             {
-                return Ok(_cservice.GetCommentsByBlogId(id));
+                Blog blog = _bservice.GetById(id);
+                if (blog == null)
+                {
+                    throw new System.Exception("Invalid Id");
+                }
+                return Ok(_cservice.GetCommentsByBlogId(blog.Id));
             }
             catch (System.Exception e)
             {
